@@ -14,9 +14,9 @@ namespace board
         public int movement { get; protected set; }
         public Board tab { get; protected set; }
 
-        public Piece(Position position, Colors colors, Board tab)
+        public Piece(Colors colors, Board tab)
         {
-            this.position = position;
+            this.position = null;
             this.colors = colors;
             this.tab = tab;
             this.movement = 0;

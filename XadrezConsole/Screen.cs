@@ -13,7 +13,7 @@ namespace XadrezConsole
                 {
                     if (tab.piece(i, j) == null)
                     {
-                        Console.Write("- ");
+                        Console.Write("-  ");
                     }
                     else
                     {
