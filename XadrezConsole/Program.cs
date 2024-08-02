@@ -10,6 +10,8 @@ namespace XadrezConsole
 
             Board tab = new Board(8, 8);
 
+            Screen.PrintBoard(tab);
+
             Console.ReadLine();
         }
     }
