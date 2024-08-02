@@ -26,10 +26,44 @@ namespace board
             return pieces[line, column];
         }
 
+        public Piece piece(Position pos)
+        {
+            return pieces[pos.Line, pos.Column];
+        }
+
+        public bool ExistPiece(Position pos)
+        {
+            ValidatePosition(pos);
+            return piece(pos) != null;
+        }
+
         public void PutPiece(Piece p, Position pos)
         {
+            if (ExistPiece(pos))
+            {
+                throw new BoardException("Position is full! ");
+            }
             pieces[pos.Line, pos.Column] = p;
             p.position = pos;
         }
+
+
+        public bool ValidPosition(Position pos)
+        {
+            if (pos.Line < 0 || pos.Line >= lines || pos.Column < 0 || pos.Column >= columns)
+            {
+                return false;
+            } 
+            return true;
+        }
+
+        public void ValidatePosition(Position pos)
+        {
+            if (!ValidPosition(pos))
+            {
+                throw new BoardException("Invalid Position! ");
+            }
+        }
+
     }
 }
