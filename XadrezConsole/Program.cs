@@ -8,21 +8,26 @@ namespace XadrezConsole
     {
         static void Main(string[] args)
         {
-
             try
             {
-                Board tab = new Board(8, 8);
+                XadrezMatch match = new XadrezMatch();
 
-                tab.PutPiece(new King(Colors.Black, tab), new Position(1, 1));
+                while (!match.End)
+                {
 
-                tab.PutPiece(new Tower(Colors.White, tab), new Position(7, 6));
+                    Console.Clear();
+                    Screen.PrintBoard(match.tab);
 
-                tab.PutPiece(new King(Colors.White, tab), new Position(1, 3));
+                    Console.WriteLine();
+                    Console.WriteLine("Origem: ");
+                    Position origin = Screen.ReadPosition().ToPosition();
+                    Console.WriteLine("Destino: ");
+                    Position destination = Screen.ReadPosition().ToPosition();
 
-                Screen.PrintBoard(tab);
-
+                    match.MovimentPerform(origin, destination);
+                }
             }
-            catch (Exception e)
+            catch(BoardException e) 
             {
                 Console.WriteLine(e.Message);
             }

@@ -21,5 +21,10 @@ namespace board
             this.tab = tab;
             this.movement = 0;
         }
+
+        public void AmountMovement()
+        {
+            movement++;
+        }
     }
 }
