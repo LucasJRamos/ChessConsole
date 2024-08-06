@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace board
 {
-    class Piece
+    abstract class Piece
     {
 
         public Position position { get; set; }
@@ -26,5 +26,8 @@ namespace board
         {
             movement++;
         }
+
+        public abstract bool [,] PossibleMovements();
+
     }
 }

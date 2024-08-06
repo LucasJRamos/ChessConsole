@@ -13,6 +13,11 @@ namespace board
             Column = column;
         }
 
+        public void Values(int line, int column)
+        {
+            this.Line = line;
+            this.Column = column;
+        }
         public override string ToString()
         {
             return Line

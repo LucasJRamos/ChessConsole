@@ -19,9 +19,15 @@ namespace XadrezConsole
                     Screen.PrintBoard(match.tab);
 
                     Console.WriteLine();
-                    Console.WriteLine("Origem: ");
+                    Console.WriteLine("Origin: ");
                     Position origin = Screen.ReadPosition().ToPosition();
-                    Console.WriteLine("Destino: ");
+
+                    bool[,] possibilities = match.tab.piece(origin).PossibleMovements();
+
+                    Console.Clear();
+                    Screen.PrintBoard(match.tab, possibilities);
+
+                    Console.WriteLine("Destination: ");
                     Position destination = Screen.ReadPosition().ToPosition();
 
                     match.MovimentPerform(origin, destination);
