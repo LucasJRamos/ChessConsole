@@ -6,8 +6,8 @@ namespace xadrez
     class XadrezMatch
     {
         public Board tab { get; private set; }
-        private int turn { get; set; }
-        private Colors playerCurrent { get; set; }
+        public int turn { get; private set; }
+        public Colors playerCurrent { get; private set; }
         public bool End { get; private set; }
 
         public XadrezMatch()
@@ -24,6 +24,49 @@ namespace xadrez
             p.AmountMovement();
             Piece captured = tab.RemovePiece(destination);
             tab.PutPiece(p, destination);
+        }
+
+        public void PlayPerform(Position origin, Position destination)
+        {
+            MovimentPerform(origin, destination);
+            turn++;
+            ChangePlayer();
+        }
+
+        public void ValidateOriginPosition(Position pos)
+        {
+            if (tab.piece(pos) == null)
+            {
+                throw new BoardException("Choosed position has no piece! ");
+            }
+            if (playerCurrent != tab.piece(pos).colors)
+            {
+                throw new BoardException("It`s not your turn! ");
+            }
+            if (!tab.piece(pos).ExistMovement())
+            {
+                throw new BoardException("Don`t have possible movements! ");
+            }
+        }
+
+        public void ValidateDestinationPosition(Position origin, Position destination) 
+        {
+            if (!tab.piece(origin).CanMoveTo(destination))
+            {
+                throw new BoardException("Destination position is invalid");
+            }
+        }
+
+        public void ChangePlayer()
+        {
+            if (playerCurrent == Colors.White)
+            {
+                playerCurrent = Colors.Black;
+            }
+            else
+            {
+                playerCurrent = Colors.White;
+            }
         }
 
         private void PutPieces()
