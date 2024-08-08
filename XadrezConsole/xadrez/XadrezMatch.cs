@@ -1,5 +1,6 @@
 ﻿using System;
 using board;
+using System.Collections.Generic;
 
 namespace xadrez
 {
@@ -9,12 +10,18 @@ namespace xadrez
         public int turn { get; private set; }
         public Colors playerCurrent { get; private set; }
         public bool End { get; private set; }
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> captured;
+
 
         public XadrezMatch()
         {
             tab = new Board(8, 8);
             turn = 1;
             playerCurrent = Colors.White;
+            End = false;
+            pieces = new HashSet<Piece>();
+            captured = new HashSet<Piece>();
             PutPieces();
         }
 
@@ -22,8 +29,12 @@ namespace xadrez
         {
             Piece p = tab.RemovePiece(origin);
             p.AmountMovement();
-            Piece captured = tab.RemovePiece(destination);
+            Piece capturedPiece = tab.RemovePiece(destination);
             tab.PutPiece(p, destination);
+            if (capturedPiece != null)
+            {
+                captured.Add(capturedPiece);
+            }
         }
 
         public void PlayPerform(Position origin, Position destination)
@@ -69,13 +80,48 @@ namespace xadrez
             }
         }
 
+        public HashSet<Piece> CapturedPieces(Colors colors)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in captured)
+            {
+                if (x.colors == colors)
+                {
+                    aux.Add(x);
+                }
+            }
+            return aux;
+        }
+
+        public HashSet<Piece> PiecesInGame(Colors colors)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in pieces)
+            {
+                if (x.colors == colors)
+                {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(CapturedPieces(colors));
+            return aux;
+        }
+
+        public void PutNewPiece(char column, int line, Piece piece)
+        {
+            tab.PutPiece(piece, new PositionXadrez(column, line).ToPosition());
+            pieces.Add(piece);
+        }
+
         private void PutPieces()
         {
-            tab.PutPiece(new Tower(Colors.White, tab), new PositionXadrez('c', 1).ToPosition());
-            tab.PutPiece(new Tower(Colors.White, tab), new PositionXadrez('c', 2).ToPosition());
-            tab.PutPiece(new Tower(Colors.White, tab), new PositionXadrez('d', 3).ToPosition());
+            PutNewPiece('a', 1, new Tower(Colors.White, tab));
+            PutNewPiece('h', 1, new Tower(Colors.White, tab));
+            PutNewPiece('e', 1, new King(Colors.White, tab));
 
-            tab.PutPiece(new King(Colors.Black, tab), new PositionXadrez('e', 8).ToPosition());
+            PutNewPiece('a', 8, new Tower(Colors.Black, tab));
+            PutNewPiece('h', 8, new Tower(Colors.Black, tab));
+            PutNewPiece('d', 8, new King(Colors.Black, tab));
         }
 
 

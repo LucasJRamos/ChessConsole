@@ -19,7 +19,7 @@ namespace xadrez
         private bool CanMove(Position pos)
         {
             Piece p = tab.piece(pos);
-            return p == null || colors != this.colors;
+            return p == null || p.colors != this.colors;
         }
 
         public override bool[,] PossibleMovements()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using board;
 using xadrez;
 
@@ -6,6 +7,41 @@ namespace XadrezConsole
 {
     class Screen
     {
+
+        public static void PrintMatch(XadrezMatch match)
+        {
+            PrintBoard(match.tab);
+            Console.WriteLine();
+            PrintCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.turn);
+            Console.WriteLine("Waiting play: " + match.playerCurrent);
+        }
+
+        public static void PrintCapturedPieces(XadrezMatch match)
+        {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            PrintSet(match.CapturedPieces(Colors.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintSet(match.CapturedPieces(Colors.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintSet(HashSet<Piece> set)
+        {
+            Console.Write("[");
+            foreach (Piece x in set)
+            {
+                Console.Write(x + ", ");
+            }
+            Console.Write("]");
+        }
+
         public static void PrintBoard(Board tab)
         {
             for (int i = 0; i < tab.lines; i++)
