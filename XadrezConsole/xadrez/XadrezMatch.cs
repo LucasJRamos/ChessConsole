@@ -12,6 +12,7 @@ namespace xadrez
         public bool End { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool check { get; private set; }
 
 
         public XadrezMatch()
@@ -20,12 +21,13 @@ namespace xadrez
             turn = 1;
             playerCurrent = Colors.White;
             End = false;
+            check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             PutPieces();
         }
 
-        public void MovimentPerform(Position origin, Position destination)
+        public Piece MovementPerform(Position origin, Position destination)
         {
             Piece p = tab.RemovePiece(origin);
             p.AmountMovement();
@@ -35,11 +37,39 @@ namespace xadrez
             {
                 captured.Add(capturedPiece);
             }
+            return capturedPiece;
+        }
+
+        public void UndoMovement(Position origin, Position destination, Piece capturedPiece) 
+        {
+            Piece p = tab.RemovePiece(destination);
+            p.DecreaseAmountMovement();
+            if (capturedPiece != null)
+            {
+                tab.PutPiece(capturedPiece, destination);
+                captured.Remove(capturedPiece);
+            }
+            tab.PutPiece(p, origin);
         }
 
         public void PlayPerform(Position origin, Position destination)
         {
-            MovimentPerform(origin, destination);
+            Piece capturedPiece = MovementPerform(origin, destination);
+            if (InCheck(playerCurrent))
+            {
+                UndoMovement(origin, destination, capturedPiece);
+                throw new BoardException("You can't check yourself! ");
+            }
+
+            if (InCheck(Opponent(playerCurrent)))
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
+
             turn++;
             ChangePlayer();
         }
@@ -105,6 +135,48 @@ namespace xadrez
             }
             aux.ExceptWith(CapturedPieces(colors));
             return aux;
+        }
+
+        private Piece king(Colors colors)
+        {
+            foreach (Piece x in PiecesInGame(colors))
+            {
+                if (x is King)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        private Colors Opponent(Colors colors)
+        {
+            if (colors == Colors.White)
+            {
+                return Colors.Black;
+            }
+            else
+            {
+                return Colors.White;
+            }
+        }
+
+        public bool InCheck(Colors colors)
+        {
+            Piece R = king(colors);
+            if (R == null)
+            {
+                throw new BoardException("No have this color king on board!");
+            }
+            foreach (Piece x in PiecesInGame(Opponent(colors)))
+            {
+                bool[,] mat = x.PossibleMovements();
+                if (mat[R.position.Line, R.position.Column])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void PutNewPiece(char column, int line, Piece piece)

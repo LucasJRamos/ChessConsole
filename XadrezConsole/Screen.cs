@@ -16,6 +16,11 @@ namespace XadrezConsole
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn);
             Console.WriteLine("Waiting play: " + match.playerCurrent);
+            if (match.check)
+            {
+                Console.WriteLine("CHECK!");
+            }
+            Console.WriteLine();
         }
 
         public static void PrintCapturedPieces(XadrezMatch match)
