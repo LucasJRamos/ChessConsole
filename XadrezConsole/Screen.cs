@@ -15,10 +15,19 @@ namespace XadrezConsole
             PrintCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn);
-            Console.WriteLine("Waiting play: " + match.playerCurrent);
-            if (match.check)
+            if (!match.End)
             {
-                Console.WriteLine("CHECK!");
+
+                Console.WriteLine("Waiting play: " + match.playerCurrent);
+                if (match.check)
+                {
+                    Console.WriteLine("CHECK!");
+                }
+            }
+            else 
+            {
+                Console.WriteLine("CHECKMATE");
+                Console.WriteLine("Winner: " + match.playerCurrent);
             }
             Console.WriteLine();
         }

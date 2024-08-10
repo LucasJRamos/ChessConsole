@@ -70,8 +70,15 @@ namespace xadrez
                 check = false;
             }
 
-            turn++;
-            ChangePlayer();
+            if (TestCheckMate(Opponent(playerCurrent)))
+            {
+                End = true;
+            }
+            else
+            {
+                turn++;
+                ChangePlayer();
+            }
         }
 
         public void ValidateOriginPosition(Position pos)
@@ -179,6 +186,37 @@ namespace xadrez
             return false;
         }
 
+        public bool TestCheckMate(Colors colors)
+        {
+            if (!InCheck(colors))
+            {
+                return false;
+            }
+            foreach (Piece x in PiecesInGame(colors))
+            {
+                bool[,] mat = x.PossibleMovements();
+                for (int i = 0; i < tab.lines; i++)
+                {
+                    for (int j = 0; j < tab.columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = MovementPerform(origin, destination);
+                            bool testCheck = InCheck(colors);
+                            UndoMovement(origin, destination, capturedPiece);
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public void PutNewPiece(char column, int line, Piece piece)
         {
             tab.PutPiece(piece, new PositionXadrez(column, line).ToPosition());
@@ -190,6 +228,7 @@ namespace xadrez
             PutNewPiece('a', 1, new Tower(Colors.White, tab));
             PutNewPiece('h', 1, new Tower(Colors.White, tab));
             PutNewPiece('e', 1, new King(Colors.White, tab));
+            PutNewPiece('b', 1, new Tower(Colors.White, tab));
 
             PutNewPiece('a', 8, new Tower(Colors.Black, tab));
             PutNewPiece('h', 8, new Tower(Colors.Black, tab));
