@@ -226,13 +226,39 @@ namespace xadrez
         private void PutPieces()
         {
             PutNewPiece('a', 1, new Tower(Colors.White, tab));
+            PutNewPiece('b', 1, new Horse(Colors.White, tab));
+            PutNewPiece('c', 1, new Pontiff(Colors.White, tab));
+            PutNewPiece('d', 1, new King(Colors.White, tab));
+            PutNewPiece('e', 1, new Lady(Colors.White, tab));
+            PutNewPiece('f', 1, new Pontiff(Colors.White, tab));
+            PutNewPiece('g', 1, new Horse(Colors.White, tab));
             PutNewPiece('h', 1, new Tower(Colors.White, tab));
-            PutNewPiece('e', 1, new King(Colors.White, tab));
-            PutNewPiece('b', 1, new Tower(Colors.White, tab));
+            PutNewPiece('a', 2, new Peon(Colors.White, tab));
+            PutNewPiece('b', 2, new Peon(Colors.White, tab));
+            PutNewPiece('c', 2, new Peon(Colors.White, tab));
+            PutNewPiece('d', 2, new Peon(Colors.White, tab));
+            PutNewPiece('e', 2, new Peon(Colors.White, tab));
+            PutNewPiece('f', 2, new Peon(Colors.White, tab));
+            PutNewPiece('g', 2, new Peon(Colors.White, tab));
+            PutNewPiece('h', 2, new Peon(Colors.White, tab));
+
 
             PutNewPiece('a', 8, new Tower(Colors.Black, tab));
-            PutNewPiece('h', 8, new Tower(Colors.Black, tab));
+            PutNewPiece('b', 8, new Horse(Colors.Black, tab));
+            PutNewPiece('c', 8, new Pontiff(Colors.Black, tab));
             PutNewPiece('d', 8, new King(Colors.Black, tab));
+            PutNewPiece('e', 8, new Lady(Colors.Black, tab));
+            PutNewPiece('f', 8, new Pontiff(Colors.Black, tab));
+            PutNewPiece('g', 8, new Horse(Colors.Black, tab));
+            PutNewPiece('h', 8, new Tower(Colors.Black, tab));
+            PutNewPiece('a', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('b', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('c', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('d', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('e', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('f', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('g', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('h', 7, new Peon(Colors.Black, tab));
         }
 
 
