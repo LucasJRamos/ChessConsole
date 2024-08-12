@@ -37,6 +37,24 @@ namespace xadrez
             {
                 captured.Add(capturedPiece);
             }
+
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column + 3);
+                Position destinationT = new Position(origin.Line, origin.Column + 1);
+                Piece T = tab.RemovePiece(originT);
+                T.AmountMovement();
+                tab.PutPiece(T, destinationT);
+            }
+
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column - 4);
+                Position destinationT = new Position(origin.Line, origin.Column - 1);
+                Piece T = tab.RemovePiece(originT);
+                T.AmountMovement();
+                tab.PutPiece(T, destinationT);
+            }
             return capturedPiece;
         }
 
@@ -50,6 +68,24 @@ namespace xadrez
                 captured.Remove(capturedPiece);
             }
             tab.PutPiece(p, origin);
+
+            if (p is King && destination.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column + 3);
+                Position destinationT = new Position(origin.Line, origin.Column + 1);
+                Piece T = tab.RemovePiece(destinationT);
+                T.DecreaseAmountMovement();
+                tab.PutPiece(T, originT);
+            }
+            if (p is King && destination.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column - 4);
+                Position destinationT = new Position(origin.Line, origin.Column - 1);
+                Piece T = tab.RemovePiece(destinationT);
+                T.AmountMovement();
+                tab.PutPiece(T, originT);
+            }
+
         }
 
         public void PlayPerform(Position origin, Position destination)
@@ -228,8 +264,8 @@ namespace xadrez
             PutNewPiece('a', 1, new Tower(Colors.White, tab));
             PutNewPiece('b', 1, new Horse(Colors.White, tab));
             PutNewPiece('c', 1, new Pontiff(Colors.White, tab));
-            PutNewPiece('d', 1, new King(Colors.White, tab));
-            PutNewPiece('e', 1, new Lady(Colors.White, tab));
+            PutNewPiece('e', 1, new King(Colors.White, tab, this));
+            PutNewPiece('d', 1, new Lady(Colors.White, tab));
             PutNewPiece('f', 1, new Pontiff(Colors.White, tab));
             PutNewPiece('g', 1, new Horse(Colors.White, tab));
             PutNewPiece('h', 1, new Tower(Colors.White, tab));
@@ -246,8 +282,8 @@ namespace xadrez
             PutNewPiece('a', 8, new Tower(Colors.Black, tab));
             PutNewPiece('b', 8, new Horse(Colors.Black, tab));
             PutNewPiece('c', 8, new Pontiff(Colors.Black, tab));
-            PutNewPiece('d', 8, new King(Colors.Black, tab));
-            PutNewPiece('e', 8, new Lady(Colors.Black, tab));
+            PutNewPiece('e', 8, new King(Colors.Black, tab, this));
+            PutNewPiece('d', 8, new Lady(Colors.Black, tab));
             PutNewPiece('f', 8, new Pontiff(Colors.Black, tab));
             PutNewPiece('g', 8, new Horse(Colors.Black, tab));
             PutNewPiece('h', 8, new Tower(Colors.Black, tab));
