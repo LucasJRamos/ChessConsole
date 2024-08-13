@@ -5,9 +5,13 @@ namespace xadrez
 {
     class Peon : Piece
     {
-        public Peon(Colors colors, Board tab)
+
+        private XadrezMatch match;
+
+        public Peon(Colors colors, Board tab, XadrezMatch match)
             : base(colors, tab)
         {
+            this.match = match;
         }
 
         public override string ToString()
@@ -57,6 +61,20 @@ namespace xadrez
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                if (position.Line== 3)
+                {
+                    Position left = new Position(position.Line, position.Column - 1);
+                    if (tab.ValidPosition(left) && ExistEnemie(left) && tab.piece(left) == match.vulnerable)
+                    {
+                        mat[left.Line - 1, left.Column] = true;
+                    }
+                    Position right = new Position(position.Line, position.Column + 1);
+                    if (tab.ValidPosition(right) && ExistEnemie(right) && tab.piece(right) == match.vulnerable)
+                    {
+                        mat[right.Line - 1, right.Column] = true;
+                    }
+                }
             }
             else
             {
@@ -82,6 +100,20 @@ namespace xadrez
                 if (tab.ValidPosition(pos) && ExistEnemie(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
+                }
+
+                if (position.Line == 4)
+                {
+                    Position left = new Position(position.Line, position.Column - 1);
+                    if (tab.ValidPosition(left) && ExistEnemie(left) && tab.piece(left) == match.vulnerable)
+                    {
+                        mat[left.Line + 1, left.Column] = true;
+                    }
+                    Position right = new Position(position.Line, position.Column + 1);
+                    if (tab.ValidPosition(right) && ExistEnemie(right) && tab.piece(right) == match.vulnerable)
+                    {
+                        mat[right.Line + 1, right.Column] = true;
+                    }
                 }
             }
             return mat;

@@ -13,6 +13,7 @@ namespace xadrez
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
         public bool check { get; private set; }
+        public Piece vulnerable { get; private set; }
 
 
         public XadrezMatch()
@@ -22,6 +23,7 @@ namespace xadrez
             playerCurrent = Colors.White;
             End = false;
             check = false;
+            vulnerable = null;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             PutPieces();
@@ -55,6 +57,25 @@ namespace xadrez
                 T.AmountMovement();
                 tab.PutPiece(T, destinationT);
             }
+
+            if (p is Peon)
+            {
+                if (origin.Column != destination.Column && capturedPiece == null) 
+                {
+                    Position posP;
+                    if (p.colors == Colors.White)
+                    {
+                        posP = new Position(destination.Line + 1, destination.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(destination.Line - 1, destination.Column);
+                    }
+                    capturedPiece = tab.RemovePiece(posP);
+                    captured.Add(capturedPiece);
+                }
+            }
+
             return capturedPiece;
         }
 
@@ -86,6 +107,24 @@ namespace xadrez
                 tab.PutPiece(T, originT);
             }
 
+            if (p is Peon)
+            {
+                if (origin.Column != destination.Column && capturedPiece == vulnerable)
+                {
+                    Piece peon = tab.RemovePiece(destination);
+                    Position posP;
+                    if (p.colors == Colors.White)
+                    {
+                        posP = new Position(3, destination.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(4, destination.Column);
+                    }
+                    tab.PutPiece(peon, posP);
+                }
+            }
+
         }
 
         public void PlayPerform(Position origin, Position destination)
@@ -114,6 +153,15 @@ namespace xadrez
             {
                 turn++;
                 ChangePlayer();
+            }
+            Piece p = tab.piece(destination);
+            if(p is Peon && (destination.Line == origin.Line - 2 || destination.Line == origin.Line + 2))
+            {
+                vulnerable = p;
+            }
+            else
+            {
+                vulnerable = null;
             }
         }
 
@@ -269,14 +317,14 @@ namespace xadrez
             PutNewPiece('f', 1, new Pontiff(Colors.White, tab));
             PutNewPiece('g', 1, new Horse(Colors.White, tab));
             PutNewPiece('h', 1, new Tower(Colors.White, tab));
-            PutNewPiece('a', 2, new Peon(Colors.White, tab));
-            PutNewPiece('b', 2, new Peon(Colors.White, tab));
-            PutNewPiece('c', 2, new Peon(Colors.White, tab));
-            PutNewPiece('d', 2, new Peon(Colors.White, tab));
-            PutNewPiece('e', 2, new Peon(Colors.White, tab));
-            PutNewPiece('f', 2, new Peon(Colors.White, tab));
-            PutNewPiece('g', 2, new Peon(Colors.White, tab));
-            PutNewPiece('h', 2, new Peon(Colors.White, tab));
+            PutNewPiece('a', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('b', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('c', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('d', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('e', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('f', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('g', 2, new Peon(Colors.White, tab, this));
+            PutNewPiece('h', 2, new Peon(Colors.White, tab, this));
 
 
             PutNewPiece('a', 8, new Tower(Colors.Black, tab));
@@ -287,14 +335,14 @@ namespace xadrez
             PutNewPiece('f', 8, new Pontiff(Colors.Black, tab));
             PutNewPiece('g', 8, new Horse(Colors.Black, tab));
             PutNewPiece('h', 8, new Tower(Colors.Black, tab));
-            PutNewPiece('a', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('b', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('c', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('d', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('e', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('f', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('g', 7, new Peon(Colors.Black, tab));
-            PutNewPiece('h', 7, new Peon(Colors.Black, tab));
+            PutNewPiece('a', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('b', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('c', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('d', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('e', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('f', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('g', 7, new Peon(Colors.Black, tab, this));
+            PutNewPiece('h', 7, new Peon(Colors.Black, tab, this));
         }
 
 
