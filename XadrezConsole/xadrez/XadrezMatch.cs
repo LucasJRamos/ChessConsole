@@ -136,6 +136,20 @@ namespace xadrez
                 throw new BoardException("You can't check yourself! ");
             }
 
+            Piece p = tab.piece(destination);
+
+            if (p is Peon)
+            {
+                if (p.colors == Colors.White && destination.Line == 0 || p.colors == Colors.Black && destination.Line == 7)
+                {
+                    p = tab.RemovePiece(destination);
+                    pieces.Remove(p);
+                    Lady lady = new Lady(p.colors, tab);
+                    tab.PutPiece(lady, destination);
+                    pieces.Add(lady);
+                }
+            }
+
             if (InCheck(Opponent(playerCurrent)))
             {
                 check = true;
@@ -154,7 +168,7 @@ namespace xadrez
                 turn++;
                 ChangePlayer();
             }
-            Piece p = tab.piece(destination);
+
             if(p is Peon && (destination.Line == origin.Line - 2 || destination.Line == origin.Line + 2))
             {
                 vulnerable = p;
